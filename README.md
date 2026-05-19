@@ -16,8 +16,8 @@ MemoTrack injects queryable PHD posterior evidence into online tracking-by-detec
 </p>
 
 <p align="center">
-  <img src="assets/fig1_intro.png" height="360">
-  <img src="assets/fig2_bubble.png" height="360">
+  <img src="assets/fig1_intro.png" height="288">
+  <img src="assets/fig2_bubble.png" height="288">
 </p>
 <p align="center">
   <img src="assets/fig3_pipeline.png" width="98%">
@@ -131,16 +131,16 @@ Place all detector and ReID weights under `external/weights/`. The links below
 are placeholders and can be replaced by the final Google Drive links after the
 weights are uploaded.
 
-| Dataset | Split | HOTA | MOTA | IDF1 | AssA | DetA | Detector weight | ReID weight | Weights |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
-| MOT17 | val | 72.4 | 80.4 | 84.9 | 76.5 | 69.0 | bytetrack_ablation.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
-| MOT17 | test | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | bytetrack_x_mot17.pth.tar | mot17_sbs_S50.pth | [download](https://drive.google.com/) |
-| MOT20 | val | - | - | - | - | - | bytetrack_x_mot17.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
-| MOT20 | test | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | bytetrack_x_mot20.tar | mot20_sbs_S50.pth | [download](https://drive.google.com/) |
-| DanceTrack | val | - | - | - | - | - | bytetrack_dance_model.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
-| DanceTrack | test | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | dance.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
-| SportsMOT | val | - | - | - | - | - | SportsMOT_yolox_x.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
-| SportsMOT | test | 70.9 | 94.6 | 72.0 | 59.3 | 84.8 | SportsMOT_yolox_x.tar / SportsMOT_yolox_x_mix.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
+| Dataset | Split | Detector weight | ReID weight | Weights |
+| --- | --- | --- | --- | --- |
+| MOT17 | val | bytetrack_ablation.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
+| MOT17 | test | bytetrack_x_mot17.pth.tar | mot17_sbs_S50.pth | [download](https://drive.google.com/) |
+| MOT20 | val | bytetrack_x_mot17.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
+| MOT20 | test | bytetrack_x_mot20.tar | mot20_sbs_S50.pth | [download](https://drive.google.com/) |
+| DanceTrack | val | bytetrack_dance_model.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
+| DanceTrack | test | dance.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
+| SportsMOT | val | SportsMOT_yolox_x.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
+| SportsMOT | test | SportsMOT_yolox_x.tar / SportsMOT_yolox_x_mix.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
 
 We use public detector and ReID weights. If you want to train custom models,
 please refer to ByteTrack for YOLOX detector training and BoT-SORT for FastReID
