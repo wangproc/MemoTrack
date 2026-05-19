@@ -32,7 +32,7 @@ class PHDDatasetConfig:
         "sportsmot": {},
     }
 
-    submission_post = {
+    default_post_modes = {
         "mot17": "post_gbi",
         "mot20": "post_gbi",
         "dance": "post",
@@ -52,6 +52,6 @@ class PHDDatasetConfig:
         return deepcopy(cls.tracker_overrides.get(dataset, {}))
 
     @classmethod
-    def default_submission_post(cls, dataset: str) -> str:
+    def default_post_mode(cls, dataset: str) -> str:
         dataset = canonical_dataset_name(dataset)
-        return cls.submission_post.get(dataset, "post_gbi")
+        return cls.default_post_modes.get(dataset, "post_gbi")

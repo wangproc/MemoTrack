@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**MemoTrack: Online Multi-Object Tracking by Existence Query**
+<h2>MemoTrack: Online Multi-Object Tracking by Existence Query</h2>
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-1.x-orange)
@@ -11,15 +11,13 @@
 
 </div>
 
-MemoTrack is an online multi-object tracker that turns the Probability
-Hypothesis Density (PHD) posterior into a queryable cross-frame
-existence-evidence field. Instead of using the PHD filter as a standalone RFS
-tracker or replacing the Kalman filter, MemoTrack keeps the standard
-tracking-by-detection pipeline and injects posterior evidence into association.
+<p align="center">
+MemoTrack injects queryable PHD posterior evidence into online tracking-by-detection for robust association under occlusion.
+</p>
 
 <p align="center">
-  <img src="assets/fig1_intro.png" width="49%">
-  <img src="assets/fig2_bubble.png" width="49%">
+  <img src="assets/fig1_intro.png" height="360">
+  <img src="assets/fig2_bubble.png" height="360">
 </p>
 <p align="center">
   <img src="assets/fig3_pipeline.png" width="98%">
@@ -133,31 +131,16 @@ Place all detector and ReID weights under `external/weights/`. The links below
 are placeholders and can be replaced by the final Google Drive links after the
 weights are uploaded.
 
-| Dataset | Detector model | ReID model | HOTA | MOTA | IDF1 | AssA | DetA | Weights |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| MOT17 | ByteTrack-X MOT17 | SBS-S50 / OSNet for validation | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | [download](https://drive.google.com/) |
-| MOT20 | ByteTrack-X MOT20 | SBS-S50 / OSNet for validation | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | [download](https://drive.google.com/) |
-| DanceTrack | DanceTrack YOLOX-X | Dance-SBS-S50 | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | [download](https://drive.google.com/) |
-| SportsMOT | SportsMOT YOLOX-X | Sports-SBS-S50 | 70.9 | 94.6 | 72.0 | 59.3 | 84.8 | [download](https://drive.google.com/) |
-| SportsMOT* | SportsMOT YOLOX-X mix | Sports-SBS-S50 | 72.0 | 96.4 | 73.1 | 59.9 | 86.6 | [download](https://drive.google.com/) |
-
-Expected local filenames:
-
-```text
-external/weights/
-|-- bytetrack_ablation.pth.tar
-|-- bytetrack_x_mot17.pth.tar
-|-- bytetrack_x_mot20.tar
-|-- osnet_ain_ms_d_c.pth.tar
-|-- mot17_sbs_S50.pth
-|-- mot20_sbs_S50.pth
-|-- bytetrack_dance_model.pth.tar
-|-- dance.pth.tar
-|-- dance_sbs_S50.pth
-|-- SportsMOT_yolox_x.tar
-|-- SportsMOT_yolox_x_mix.tar
-`-- sports_sbs_S50.pth
-```
+| Dataset | Split | HOTA | MOTA | IDF1 | AssA | DetA | Detector weight | ReID weight | Weights |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| MOT17 | val | 72.4 | 80.4 | 84.9 | 76.5 | 69.0 | bytetrack_ablation.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
+| MOT17 | test | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | bytetrack_x_mot17.pth.tar | mot17_sbs_S50.pth | [download](https://drive.google.com/) |
+| MOT20 | val | - | - | - | - | - | bytetrack_x_mot17.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
+| MOT20 | test | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | bytetrack_x_mot20.tar | mot20_sbs_S50.pth | [download](https://drive.google.com/) |
+| DanceTrack | val | - | - | - | - | - | bytetrack_dance_model.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
+| DanceTrack | test | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | dance.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
+| SportsMOT | val | - | - | - | - | - | SportsMOT_yolox_x.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
+| SportsMOT | test | 70.9 | 94.6 | 72.0 | 59.3 | 84.8 | SportsMOT_yolox_x.tar / SportsMOT_yolox_x_mix.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
 
 We use public detector and ReID weights. If you want to train custom models,
 please refer to ByteTrack for YOLOX detector training and BoT-SORT for FastReID
@@ -265,16 +248,3 @@ authors of [Deep OC-SORT](https://github.com/GerardMaggiolino/Deep-OC-SORT/),
 [DiffMOT](https://github.com/Kroery/DiffMOT), and
 [TrackTrack](https://github.com/kamkyu94/TrackTrack) for making their code
 available.
-
-## Citation
-
-If MemoTrack is useful for your research, please cite:
-
-```bibtex
-@article{memotrack,
-  title={MemoTrack: Online Multi-Object Tracking by Existence Query},
-  author={},
-  journal={},
-  year={}
-}
-```

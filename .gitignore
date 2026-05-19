@@ -11,14 +11,11 @@ data/dancetrack/
 data/sportsmot_publish/
 external/weights/*
 !external/weights/.gitkeep
-!external/weights/README.md
 cache/
 cache
 outputs/
 results/trackers/*
 !results/trackers/.gitkeep
-results/submissions/*
-!results/submissions/.gitkeep
 *.zip
 *.tar
 *.pth

@@ -2,8 +2,6 @@ import argparse
 import os
 import shutil
 import time
-import zipfile
-from pathlib import Path
 
 import dataset
 import utils
@@ -34,21 +32,6 @@ def _parse_cfg_overrides(items):
     return overrides
 
 
-def _flat_zip(input_dir, output_zip):
-    input_dir = Path(input_dir)
-    if not input_dir.is_dir():
-        raise FileNotFoundError(f'Submission input directory not found: {input_dir}')
-    txt_files = sorted(input_dir.glob('*.txt'))
-    if not txt_files:
-        raise RuntimeError(f'No txt files found in {input_dir}')
-    output_zip = Path(output_zip)
-    output_zip.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(output_zip, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
-        for txt_file in txt_files:
-            zf.write(txt_file, arcname=txt_file.name)
-    print(f'Created submission zip {output_zip} with {len(txt_files)} txt files.')
-
-
 def get_main_args():
     parser = argparse.ArgumentParser(description='Run MemoTrack for online multi-object tracking.')
     parser.add_argument('--dataset', type=str, default='mot17')
@@ -62,8 +45,6 @@ def get_main_args():
     parser.add_argument('--reid_path', type=str, default='')
     parser.add_argument('--cfg', nargs='*', default=None, help='optional key=value parameter overrides')
     parser.add_argument('--post_mode', choices=['auto', 'post', 'post_gbi', 'both', 'none'], default='auto')
-    parser.add_argument('--make_submission', action='store_true', help='create a flat zip submission after tracking')
-    parser.add_argument('--submission_zip', type=str, default='', help='optional output zip path')
     parser.add_argument('--no_post', action='store_true', help='do not run post-processing')
     args = parser.parse_args()
     args.dataset = canonical_dataset_name(args.dataset)
@@ -159,7 +140,7 @@ def main():
         utils.write_results_no_score(result_filename, res)
     print(f'Finished, results saved to {folder}')
 
-    default_post = PHDDatasetConfig.default_submission_post(args.dataset)
+    default_post = PHDDatasetConfig.default_post_mode(args.dataset)
     effective_post_mode = default_post if args.post_mode == 'auto' else args.post_mode
 
     if not args.no_post and effective_post_mode != 'none':
@@ -181,16 +162,6 @@ def main():
                 out_path = os.path.join(post_folder_gbi, file_name)
                 GBInterpolation(path_in=in_path, path_out=out_path, interval=interval)
             print(f'Gradient boosting interpolation post-processing applied, saved to {post_folder_gbi}.')
-
-    if args.make_submission:
-        submit_post = default_post if args.post_mode in {'auto', 'both'} else effective_post_mode
-        if submit_post == 'none':
-            submit_name = args.exp_name
-        else:
-            submit_name = args.exp_name + '_' + submit_post
-        input_dir = os.path.join(args.result_folder, submit_name, 'data')
-        output_zip = args.submission_zip or os.path.join('results', f'{submit_name}_submission.zip')
-        _flat_zip(input_dir, output_zip)
 
 
 if __name__ == '__main__':
