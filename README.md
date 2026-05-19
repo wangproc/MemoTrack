@@ -16,8 +16,8 @@ MemoTrack injects queryable PHD posterior evidence into online tracking-by-detec
 </p>
 
 <p align="center">
-  <img src="assets/fig1_intro.png" height="288">
-  <img src="assets/fig2_bubble.png" height="288">
+  <img src="assets/fig1_intro.png" height="317">
+  <img src="assets/fig2_bubble.png" height="432">
 </p>
 <p align="center">
   <img src="assets/fig3_pipeline.png" width="98%">
@@ -52,7 +52,7 @@ Results on public test sets are summarized below. `SportsMOT*` follows the
 stronger-detector setting used by prior SportsMOT trackers.
 
 | Dataset | HOTA | MOTA | IDF1 | AssA | DetA | AssR | FP | FN | IDs | Frag |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | :---: | :---: | ---: | ---: |
 | MOT17 | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | 73.0 | 23,706 | 85,551 | 1,014 | 1,764 |
 | MOT20 | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | 73.1 | 20,004 | 98,616 | 685 | 860 |
 | DanceTrack | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | 50.2 | 7,874 | 10,520 | 1,378 | 2,066 |
@@ -131,16 +131,27 @@ Place all detector and ReID weights under `external/weights/`. The links below
 are placeholders and can be replaced by the final Google Drive links after the
 weights are uploaded.
 
-| Dataset | Split | Detector weight | ReID weight | Weights |
-| --- | --- | --- | --- | --- |
-| MOT17 | val | bytetrack_ablation.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
-| MOT17 | test | bytetrack_x_mot17.pth.tar | mot17_sbs_S50.pth | [download](https://drive.google.com/) |
-| MOT20 | val | bytetrack_x_mot17.pth.tar | osnet_ain_ms_d_c.pth.tar | [download](https://drive.google.com/) |
-| MOT20 | test | bytetrack_x_mot20.tar | mot20_sbs_S50.pth | [download](https://drive.google.com/) |
-| DanceTrack | val | bytetrack_dance_model.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
-| DanceTrack | test | dance.pth.tar | dance_sbs_S50.pth | [download](https://drive.google.com/) |
-| SportsMOT | val | SportsMOT_yolox_x.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
-| SportsMOT | test | SportsMOT_yolox_x.tar / SportsMOT_yolox_x_mix.tar | sports_sbs_S50.pth | [download](https://drive.google.com/) |
+<table>
+  <thead>
+    <tr>
+      <th align="center">Dataset</th>
+      <th align="center">Split</th>
+      <th align="left" width="22%">Detector weight</th>
+      <th align="left">ReID weight</th>
+      <th align="center">Weights</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td align="center">MOT17</td><td align="center">val</td><td>bytetrack_ablation.pth.tar</td><td>osnet_ain_ms_d_c.pth.tar</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">MOT17</td><td align="center">test</td><td>bytetrack_x_mot17.pth.tar</td><td>mot17_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">MOT20</td><td align="center">val</td><td>bytetrack_x_mot17.pth.tar</td><td>osnet_ain_ms_d_c.pth.tar</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">MOT20</td><td align="center">test</td><td>bytetrack_x_mot20.tar</td><td>mot20_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">DanceTrack</td><td align="center">val</td><td>bytetrack_dance_model.pth.tar</td><td>dance_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">DanceTrack</td><td align="center">test</td><td>dance.pth.tar</td><td>dance_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">SportsMOT</td><td align="center">val</td><td>SportsMOT_yolox_x.tar</td><td>sports_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+    <tr><td align="center">SportsMOT</td><td align="center">test</td><td>SportsMOT_yolox_x.tar<br>SportsMOT_yolox_x_mix.tar</td><td>sports_sbs_S50.pth</td><td align="center"><a href="https://drive.google.com/">download</a></td></tr>
+  </tbody>
+</table>
 
 We use public detector and ReID weights. If you want to train custom models,
 please refer to ByteTrack for YOLOX detector training and BoT-SORT for FastReID
