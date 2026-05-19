@@ -15,12 +15,9 @@
 MemoTrack injects queryable PHD posterior evidence into online tracking-by-detection for robust association under occlusion.
 </p>
 
-<table align="center">
-  <tr>
-    <td align="center" valign="middle"><img src="assets/fig1_intro.png" height="317"></td>
-    <td align="center" valign="middle"><img src="assets/fig2_bubble.png" height="432"></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="assets/fig1_intro_bubble.png" width="92%">
+</p>
 <p align="center">
   <img src="assets/fig3_pipeline.png" width="98%">
 </p>
