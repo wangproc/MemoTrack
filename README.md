@@ -16,47 +16,50 @@ Hypothesis Density (PHD) posterior into a queryable cross-frame
 existence-evidence field. Instead of using the PHD filter as a standalone RFS
 tracker or replacing the Kalman filter, MemoTrack keeps the standard
 tracking-by-detection pipeline and injects posterior evidence into association.
-The tracker contains two modules: **Posterior Track Calibration (PTC)** for
-track-side reliability refinement and **Track-Conditioned Evidence Recovery
-(TCER)** for controlled low-score recovery.
 
 <p align="center">
-  <img src="assets/fig1_intro.png" width="35%">
-  <img src="assets/fig2_pipeline.png" width="63%">
+  <img src="assets/fig1_intro.png" width="49%">
+  <img src="assets/fig2_bubble.png" width="49%">
 </p>
 <p align="center">
-  <img src="assets/fig3_tracking_results.png" width="98%">
-</p>
-<p align="center">
-  <img src="assets/fig4_qualitative_comparison.png" width="98%">
+  <img src="assets/fig3_pipeline.png" width="98%">
 </p>
 
-## Highlights
+## Abstract
 
-- MemoTrack uses the PHD posterior as auxiliary existence evidence rather than
-  as an identity-producing tracker, making RFS-style temporal memory compatible
-  with modern online MOT pipelines.
-- PTC queries posterior support at predicted track locations to suppress
-  unreliable primary associations in crowded scenes.
-- TCER recovers genuine low-score observations only when they are supported by
-  posterior existence evidence, short-term lost-track explainability, and local
-  structural safety.
-- The same posterior-evidence configuration is used across MOT17, MOT20,
-  DanceTrack, and SportsMOT, with only dataset-specific detector thresholds and
-  standard post-processing settings.
+Online MOT has long been constrained by a persistent tension: a tracker must
+preserve stable primary associations while recovering genuine targets that
+momentarily vanish under occlusion or detector degradation. Existing methods
+refine association with richer motion and appearance cues, but current-frame
+detector scores alone cannot reveal whether a location is still supported by
+long-term existence evidence. To address this gap, we propose MemoTrack, a
+lightweight PHD existence evidence framework for online MOT. Rather than using a
+random finite set filter as a full state estimator or tracker, MemoTrack recasts
+the PHD posterior intensity as a queryable cross-frame existence field and
+injects it into a standard tracking-by-detection pipeline. Specifically,
+Posterior Track Calibration (PTC) queries posterior support at predicted track
+locations to calibrate track reliability during high-score association, while
+Track-Conditioned Evidence Recovery (TCER) queries posterior evidence at
+low-score detections and combines it with track explainability and local
+structural constraints to enable controlled recovery. This design preserves the
+simplicity of online tracking while providing a second source of evidence beyond
+current-frame detector confidence. Experiments show that MemoTrack achieves near
+state-of-the-art results across MOT17, DanceTrack, and SportsMOT, and
+state-of-the-art IDF1 and AssA scores on MOT20, demonstrating strong robustness
+in crowded and heavily occluded scenes.
 
 ## Tracking Performance
 
-Results on public test sets are summarized below. `MemoTrack*` follows the
+Results on public test sets are summarized below. `SportsMOT*` follows the
 stronger-detector setting used by prior SportsMOT trackers.
 
-| Dataset | Setting | HOTA | IDF1 | MOTA | AssA | IDs |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| MOT17 | test | 66.3 | 82.0 | 80.5 | 67.6 | 1014 |
-| MOT20 | test | 66.3 | 82.0 | 77.0 | 69.1 | 685 |
-| DanceTrack | test | 60.2 | 61.1 | 93.2 | 45.0 | - |
-| SportsMOT | test | 70.9 | 72.0 | 94.6 | 59.3 | - |
-| SportsMOT | test, stronger detector | 72.0 | 73.1 | 96.4 | 59.9 | - |
+| Dataset | HOTA | MOTA | IDF1 | AssA | DetA | AssR | FP | FN | IDs | Frag |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| MOT17 | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | 73.0 | 23,706 | 85,551 | 1,014 | 1,764 |
+| MOT20 | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | 73.1 | 20,004 | 98,616 | 685 | 860 |
+| DanceTrack | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | 50.2 | 7,874 | 10,520 | 1,378 | 2,066 |
+| SportsMOT | 70.9 | 94.6 | 72.0 | 59.3 | 84.8 | 61.5 | 27,690 | 24,471 | 2,974 | 3,633 |
+| SportsMOT* | 72.0 | 96.4 | 73.1 | 59.9 | 86.6 | 62.2 | 13,319 | 20,828 | 2,882 | 3,387 |
 
 ## Installation
 
@@ -126,24 +129,44 @@ python prepare_sportsmot.py --data_root data/sportsmot_publish
 
 ## Model Zoo and Weights
 
-All detector and ReID weights should be placed in `external/weights/`. The table
-lists the expected local filenames and the upstream sources used in our
-experiments.
+Place all detector and ReID weights under `external/weights/`. The links below
+are placeholders and can be replaced by the final Google Drive links after the
+weights are uploaded.
 
-| Dataset | Expected files | Source |
-| --- | --- | --- |
-| MOT17/MOT20 | `bytetrack_ablation.pth.tar`, `bytetrack_x_mot17.pth.tar`, `bytetrack_x_mot20.tar`, `osnet_ain_ms_d_c.pth.tar`, `mot17_sbs_S50.pth`, `mot20_sbs_S50.pth` | BoostTrack / Deep-OC-SORT weights: [Google Drive](https://drive.google.com/drive/folders/15hZcR4bW_Z9hEaXXjeWhQl_jwRKllauG?usp=sharing) |
-| DanceTrack | `bytetrack_dance_model.pth.tar`, `dance.pth.tar`, `dance_sbs_S50.pth` | TrackTrack-style DanceTrack weights: [link 1](https://drive.google.com/file/d/1O__fCM3gPbzHtav3XrlzHjjs96Dl45m8/view), [link 2](https://drive.google.com/file/d/12rBCIYLCXqT8bYmNrEwNdp6MmJ7whEg-/view) |
-| SportsMOT | `SportsMOT_yolox_x.tar`, `SportsMOT_yolox_x_mix.tar`, `sports_sbs_S50.pth` | DiffMOT/SportsMOT weights: [release page](https://github.com/Kroery/DiffMOT/releases/tag/v1.0), [Sports-SBS-S50](https://github.com/Kroery/DiffMOT/releases/download/v1.0/sports_sbs_S50.pth) |
+| Dataset | Detector model | ReID model | HOTA | MOTA | IDF1 | AssA | DetA | Weights |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| MOT17 | ByteTrack-X MOT17 | SBS-S50 / OSNet for validation | 66.3 | 80.5 | 82.0 | 67.6 | 65.3 | [download](https://drive.google.com/) |
+| MOT20 | ByteTrack-X MOT20 | SBS-S50 / OSNet for validation | 66.2 | 76.9 | 82.0 | 69.1 | 63.7 | [download](https://drive.google.com/) |
+| DanceTrack | DanceTrack YOLOX-X | Dance-SBS-S50 | 60.2 | 93.2 | 61.1 | 45.0 | 80.6 | [download](https://drive.google.com/) |
+| SportsMOT | SportsMOT YOLOX-X | Sports-SBS-S50 | 70.9 | 94.6 | 72.0 | 59.3 | 84.8 | [download](https://drive.google.com/) |
+| SportsMOT* | SportsMOT YOLOX-X mix | Sports-SBS-S50 | 72.0 | 96.4 | 73.1 | 59.9 | 86.6 | [download](https://drive.google.com/) |
 
-You may also pass absolute paths at runtime with `--detector_path` and
-`--reid_path`, which is useful when weights are stored outside the repository.
+Expected local filenames:
+
+```text
+external/weights/
+|-- bytetrack_ablation.pth.tar
+|-- bytetrack_x_mot17.pth.tar
+|-- bytetrack_x_mot20.tar
+|-- osnet_ain_ms_d_c.pth.tar
+|-- mot17_sbs_S50.pth
+|-- mot20_sbs_S50.pth
+|-- bytetrack_dance_model.pth.tar
+|-- dance.pth.tar
+|-- dance_sbs_S50.pth
+|-- SportsMOT_yolox_x.tar
+|-- SportsMOT_yolox_x_mix.tar
+`-- sports_sbs_S50.pth
+```
+
+We use public detector and ReID weights. If you want to train custom models,
+please refer to ByteTrack for YOLOX detector training and BoT-SORT for FastReID
+ReID training.
 
 ## Running MemoTrack
 
-### Validation
-
-The helper script runs the common validation commands:
+Set dataset roots if they are outside the repository and run all validation
+experiments with:
 
 ```bash
 DATA_DIR=/path/to/data \
@@ -152,22 +175,30 @@ SPORTSMOT_DATA_DIR=/path/to/sportsmot_publish/dataset \
 bash scripts/run_validation.sh
 ```
 
-Individual runs are often easier for debugging:
+You can also run each benchmark separately.
 
 ```bash
-# MOT17 / MOT20 half-validation
-python main.py --dataset mot17 --exp_name MemoTrack_MOT17_val --post_mode post_gbi
-python main.py --dataset mot20 --exp_name MemoTrack_MOT20_val --post_mode post_gbi
+# MOT17 and MOT20 half-validation
+python main.py --dataset mot17 --data_dir data --exp_name MemoTrack_MOT17_val --post_mode post_gbi
+python main.py --dataset mot20 --data_dir data --exp_name MemoTrack_MOT20_val --post_mode post_gbi
 
-# DanceTrack / SportsMOT validation
-python main.py --dataset dance --exp_name MemoTrack_Dance_val --post_mode post
+# DanceTrack validation
+python main.py --dataset dance --data_dir data \
+  --detector_path external/weights/dance.pth.tar \
+  --reid_path external/weights/dance_sbs_S50.pth \
+  --exp_name MemoTrack_DANCE_val \
+  --post_mode post_gbi
+
+# SportsMOT validation
 python main.py --dataset sportsmot \
   --data_dir data/sportsmot_publish/dataset \
-  --exp_name MemoTrack_Sports_val \
+  --detector_path external/weights/SportsMOT_yolox_x.tar \
+  --reid_path external/weights/sports_sbs_S50.pth \
+  --exp_name MemoTrack_SPORTSMOT_val \
   --post_mode post
 ```
 
-Evaluate MOT-style results with TrackEval:
+Evaluate MOT17, MOT20, or DanceTrack results with TrackEval:
 
 ```bash
 python external/TrackEval/scripts/run_mot_challenge.py \
@@ -182,83 +213,43 @@ python external/TrackEval/scripts/run_mot_challenge.py \
   --PRINT_ONLY_COMBINED True
 ```
 
-### Test Submission
-
-To generate all submission files:
+For SportsMOT validation:
 
 ```bash
-DATA_DIR=/path/to/data \
-SPORTSMOT_DATA_DIR=/path/to/sportsmot_publish/dataset \
-bash scripts/run_test_submissions.sh
+python eval_sportsmot.py \
+  --data_root data/sportsmot_publish/dataset \
+  --trackers_folder results/trackers/SPORTSMOT-val \
+  --tracker_name MemoTrack_SPORTSMOT_val_post
 ```
-
-The main test commands are:
-
-```bash
-# MOT17 uses all three public detector splits on the test set.
-python main.py --dataset mot17 --test_dataset --all_mot17_detectors \
-  --exp_name MemoTrack_MOT17_test --make_submission
-
-python main.py --dataset mot20 --test_dataset \
-  --exp_name MemoTrack_MOT20_test --make_submission
-
-python main.py --dataset dance --test_dataset \
-  --detector_path external/weights/dance.pth.tar \
-  --reid_path external/weights/dance_sbs_S50.pth \
-  --exp_name MemoTrack_Dance_test --make_submission
-```
-
-SportsMOT has two detector settings:
-
-```bash
-# Standard detector
-python main.py --dataset sportsmot --test_dataset \
-  --data_dir data/sportsmot_publish/dataset \
-  --detector_path external/weights/SportsMOT_yolox_x.tar \
-  --reid_path external/weights/sports_sbs_S50.pth \
-  --exp_name MemoTrack_Sports_test --make_submission
-
-# Stronger detector setting
-python main.py --dataset sportsmot --test_dataset \
-  --data_dir data/sportsmot_publish/dataset \
-  --detector_path external/weights/SportsMOT_yolox_x_mix.tar \
-  --reid_path external/weights/sports_sbs_S50.pth \
-  --exp_name MemoTrack_Sports_test_mix --make_submission
-```
-
-Each `--make_submission` command creates a flat zip file under `results/`.
 
 ## Visualization
 
-Render qualitative tracking boxes:
+After running MemoTrack, draw tracking boxes on selected frames:
 
 ```bash
 python tools/visualize_tracking_result.py \
-  --dataset mot17 \
+  --dataset_root data/MOT17 \
+  --split train \
+  --seq MOT17-02-FRCNN \
   --result_dir results/trackers/MOT17-val/MemoTrack_MOT17_val_post_gbi/data \
+  --frame_ids 1,50,100 \
   --output_dir results/img_result/qualitative/mot17
 ```
 
-Render PHD intensity overlays:
-
-```bash
-python tools/visualize_phd_intensity.py \
-  --dataset mot17 \
-  --exp_name MemoTrack_heatmap \
-  --output_dir results/img_result/phd_intensity/mot17
-```
+For other datasets, replace `--dataset_root`, `--split`, `--seq`, and
+`--result_dir` with the corresponding dataset folder and result file directory.
 
 ## Repository Layout
 
 ```text
 MemoTrack/
-|-- main.py                    # unified entry for validation and test submission
+|-- main.py                    # unified entry for tracking and validation
 |-- memotracker/               # MemoTrack core, PHD posterior, PTC, and TCER
 |-- external/                  # detector, ReID, and TrackEval dependencies
 |-- data/tools/                # dataset conversion helpers
-|-- tools/                     # qualitative visualization and PHD heatmap tools
-|-- scripts/                   # reproducible validation and submission scripts
-|-- results/                   # generated tracking outputs and submissions
+|-- tools/                     # qualitative visualization tools
+|-- scripts/                   # reproducible validation scripts
+|-- results/                   # generated tracking outputs
 `-- environment.yml            # conda environment
 ```
 
@@ -267,11 +258,13 @@ by git.
 
 ## Acknowledgements
 
-MemoTrack builds on public components from the MOT community, including YOLOX,
-FastReID, TrackEval, ByteTrack-style detectors, BoT-SORT/Deep-OC-SORT ReID
-models, BoostTrack utilities, TrackTrack-style DanceTrack weights, and DiffMOT
-SportsMOT resources. We sincerely thank the authors for making their code and
-models available.
+Our implementation is developed on top of publicly available codes. We thank the
+authors of [Deep OC-SORT](https://github.com/GerardMaggiolino/Deep-OC-SORT/),
+[SORT](https://github.com/abewley/sort),
+[BoostTrack](https://github.com/vukasin-stanojevic/BoostTrack),
+[DiffMOT](https://github.com/Kroery/DiffMOT), and
+[TrackTrack](https://github.com/kamkyu94/TrackTrack) for making their code
+available.
 
 ## Citation
 
