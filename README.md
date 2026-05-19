@@ -217,6 +217,10 @@ python eval_sportsmot.py \
 
 ## Visualization
 
+<p align="center">
+  <img src="assets/fig_tracking_results.png" width="98%">
+</p>
+
 After running MemoTrack, draw tracking boxes on selected frames:
 
 ```bash
