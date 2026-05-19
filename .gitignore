@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Local datasets, weights, caches, and generated outputs
+data/MOT17/
+data/MOT20/
+data/dancetrack/
+data/sportsmot_publish/
+external/weights/*
+!external/weights/.gitkeep
+!external/weights/README.md
+cache/
+cache
+outputs/
+results/trackers/*
+!results/trackers/.gitkeep
+results/submissions/*
+!results/submissions/.gitkeep
+*.zip
+*.tar
+*.pth
+*.pth.tar
+
+# Logs and temporary files
+*.log
+*.out
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Vendored dependency noise
+external/YOLOX/build/
+external/YOLOX/demo/
+external/YOLOX/docs/
+external/YOLOX/assets/
+external/YOLOX/.github/
+external/YOLOX/.git/
+*.so
+*.o
+.ninja_deps
+.ninja_log
+build.ninja
