@@ -20,7 +20,7 @@ BASE_RFS_VALUES = deepcopy(RFSSettings.values)
 
 FINAL_CFG = {
     'high_det_thresh': 0.6,
-    'low_det_thresh': 0.2,
+    'low_det_thresh': 0.3,
     'init_thresh': 0.8,
     'first_match_iou': 0.2,
     'second_match_iou': 0.6,
@@ -47,7 +47,7 @@ FINAL_CFG = {
     'use_bprime_group_anchor': False,
     'enable_b_diag': False,
     'enable_cprime_diag': False,
-    'cprime_low_det_thresh': 0.2,
+    'cprime_low_det_thresh': 0.3,
     'cprime_lost_max_age': 3,
     'cprime_track_phd_gate': 0.03,
     'cprime_boost_iou_gate': 0.15,
