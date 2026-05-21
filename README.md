@@ -128,6 +128,8 @@ python prepare_sportsmot.py --data_root data/sportsmot_publish
 
 Place all detector and ReID weights under `external/weights/`. The same weight
 package is mirrored on Google Drive and Baidu Netdisk.
+The released weights are collected from the public weight packages of
+Deep OC-SORT, DiffMOT, and TrackTrack.
 
 <table>
   <thead>
